@@ -1,5 +1,7 @@
 # custom-image-in-product-view-page
 
+Clone the module and enable it!
+
 # magento backend
 + create a category called Brands if it is not there.
 + create a sub-cat or brands which will be the actual brand name.
