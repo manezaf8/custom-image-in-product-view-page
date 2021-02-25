@@ -1,9 +1,9 @@
 # custom-image-in-product-view-page
 
-#magento backend
-create a category called Brands if it is not there.
-create a sub-cat or brands which will be the actual brand name.
-go to products and assign the cat to products
+# magento backend
++ create a category called Brands if it is not there.
++ create a sub-cat or brands which will be the actual brand name.
++ go to products and assign the cat to products
 
 
 if you have a Magento_Catalog on your them..... 
