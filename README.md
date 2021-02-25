@@ -1,0 +1,1 @@
+# custom-image-in-product-view-page
