@@ -87,6 +87,9 @@ class View extends  \Magento\Catalog\Block\Product\View
      * @var ProductRepositoryInterface
      */
     protected $productRepository;
+
+    protected $categoryFactory;
+
     
     /**
      *
@@ -119,9 +122,10 @@ class View extends  \Magento\Catalog\Block\Product\View
         \Magento\Framework\Locale\FormatInterface $localeFormat,
         \Magento\Customer\Model\Session $customerSession,
         ProductRepositoryInterface $productRepository,
+        \Magento\Catalog\Model\CategoryFactory $categoryFactory,
         array $data = []
     ) {
-
+        $this->_categoryFactory = $categoryFactory;
         $this->categoryCollecionFactory = $categoryCollecionFactory;
         $this->fileinfo = $fileinfo;
         $this->categoryRepository = $categoryRepository;
@@ -148,17 +152,23 @@ class View extends  \Magento\Catalog\Block\Product\View
      */
     public function getBrandCollection($categoryTitle='Brands')
     {
-        $collection = $this->categoryCollecionFactory
-                ->create()
-                ->addAttributeToFilter('name',$categoryTitle)
-                ->setPageSize(1);
+        
+        $collection = $this->categoryCollecionFactory->create();
+
         $ids = array();
+        
         if ($collection->getSize()) {
-            $categorySubs = $collection->getFirstItem()->getChildrenCategories();
-            foreach ($categorySubs as $categorySub)
-            {
-                array_push($ids, $categorySub->getId());
+            foreach($collection as $collect){
+                $category = $this->_categoryFactory->create()->load($collect->getId());
+                $categoryName = $category->getName();
+                if($categoryName == $categoryTitle){   
+                $categorySubs = $collect->getChildrenCategories();
+                 foreach ($categorySubs as $categorySub)
+            {   
+                    array_push($ids, $categorySub->getId());      
+              }
             }
+          }
         }
         return $ids;
 
@@ -175,27 +185,32 @@ class View extends  \Magento\Catalog\Block\Product\View
         $categoryData=array();
         $productCategory = $this->getProduct()->getCategoryIds();
         $brandList = $this->getBrandCollection();
-        $commonCatergory = array_intersect($productCategory,$brandList);
+        $commonCatergory = array_intersect($productCategory,$brandList);        
+
         if(count($commonCatergory)>0)
         {
             foreach($commonCatergory as $categoryItem){
                 $category = $this->categoryRepository->get($categoryItem);
+                //var_dump($category);
                 foreach ($category->getAttributes() as $attributeCode => $attribute) {
                     if ($attribute->getBackend() instanceof ImageBackendModel) {
                         $fileName = $category->getData($attributeCode);
-                        if ($this->fileinfo->isExist($fileName)) {
-
-                            array_push($categoryData,
-                                 array(
-                                'name'=> basename($fileName),
-                                'url' => $category->getImageUrl($attributeCode)
-                            )
-                        );
+                        if(!is_null($fileName)){
+                            if ($this->fileinfo->isExist($fileName)) {
+                                if(!in_array($category->getId(), $categoryData))
+                                {
+                                    $categoryData [$category->getId()]
+                                    = array(
+                                        'name'=> basename($fileName),
+                                        'url' => $category->getImageUrl($attributeCode)
+                                    );
+                                }
+                               
+                            }
                         }
                     }
                 }
-            }
-        
+            }        
     }
         return $categoryData;
     }
