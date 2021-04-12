@@ -4,11 +4,11 @@
  * See COPYING.txt for license details.
  */
 
-/** @var $block \Magento\Catalog\Block\Product\View*/
+/** @var $block Ecomplete\Brandlogo\Block\Product\View*/
 
 ?>
-<div class="brand-logo-image">
-<?php foreach($block->getCategoryImage() as $brand): ?>
-<img src="<?= $brand['url'] ?>" alt="<?= $brand['name'] ?>" height="150px" width="300px">
-<?php endforeach; ?>
+<div class="brand-logo-image" >
+    <?php foreach($block->getCategoryImage() as $brand): ?>
+             <img src="<?= $brand['url'] ?>" alt="<?= $brand['name'] ?>" >
+    <?php endforeach; ?>
 </div>
