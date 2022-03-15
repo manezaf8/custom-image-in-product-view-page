@@ -36,72 +36,68 @@ class View extends \Magento\Catalog\Block\Product\View
     /**
      * @var FileInfo
      */
-    private $fileinfo;
+    private FileInfo $fileinfo;
 
     /**
      * @var CategoryRepository
      */
-    protected $categoryRepository;
+    protected CategoryRepository $categoryRepository;
 
     /**
      * @var UrlEncoderInterface
      */
-    protected $urlEncoder;
+    protected UrlEncoderInterface $urlEncoder;
 
     /**
      * Magento string lib
      *
      * @var StringUtils
      */
-    protected $string;
+    protected StringUtils $string;
 
     /**
      * @var EncoderInterface
      */
-    protected $_jsonEncoder;
+    protected EncoderInterface $_jsonEncoder;
 
     /**
      * @var PriceCurrencyInterface
      * @deprecated 102.0.0
      */
-
-    private $CategoryCollecionFactory;
+    private PriceCurrencyInterface $CategoryCollecionFactory;
 
     /**
      * @var PriceCurrencyInterface
      */
-    protected $priceCurrency;
-
+    protected PriceCurrencyInterface $priceCurrency;
 
     /**
      * @var HelperProduct
      */
-    protected $_productHelper;
+    protected HelperProduct $_productHelper;
 
     /**
      * @var ConfigInterface
      */
-    protected $productTypeConfig;
+    protected ConfigInterface $productTypeConfig;
 
     /**
      * @var FormatInterface
      */
-    protected $_localeFormat;
+    protected FormatInterface $_localeFormat;
 
     /**
      * @var Session
      */
-    protected $customerSession;
+    protected Session $customerSession;
 
     /**
      * @var ProductRepositoryInterface
      */
-    protected $productRepository;
-
-    protected $categoryFactory;
-
+    protected ProductRepositoryInterface $productRepository;
 
     /**
+     * View Constructor
      *
      * @param Context $context
      * @param UrlEncoderInterface $urlEncoder
@@ -153,7 +149,6 @@ class View extends \Magento\Catalog\Block\Product\View
             $priceCurrency,
             $data
         );
-
     }
 
     /**
@@ -225,5 +220,4 @@ class View extends \Magento\Catalog\Block\Product\View
 
         return $categoryData;
     }
-
 }
