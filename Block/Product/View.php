@@ -1,62 +1,72 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * @package   Maneza\Brandlogo\Block\Product
+ * @author    Ntabethemba Ntshoza
+ * @date      15-03-2022
+ * @copyright Copyright © 2022 MRP Group IT
  */
 
-/**
- * Product description block
- *
- * @author     Ntabethemba Maneza Mabetshe <maneza@maneza.co.za>
- */
 namespace Maneza\Brandlogo\Block\Product;
 
+use Magento\Catalog\Block\Product\Context;
+use Magento\Catalog\Model\Category\FileInfo;
+use Magento\Catalog\Model\CategoryFactory;
+use Magento\Catalog\Model\CategoryRepository;
 use Magento\Catalog\Model\Product;
+use Magento\Catalog\Helper\Product as HelperProduct;
+use Magento\Catalog\Model\ProductTypes\ConfigInterface;
+use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
+use Magento\Customer\Model\Session;
+use Magento\Framework\Url\EncoderInterface as UrlEncoderInterface;
+use Magento\Framework\Json\EncoderInterface;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
+use Magento\Framework\Locale\FormatInterface;
 use Magento\Framework\Phrase;
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Catalog\Model\Category\Attribute\Backend\Image as ImageBackendModel;
+use Magento\Framework\Stdlib\StringUtils;
 
 
 /**
- * View View Class to deplay category images into the frontend.
+ * Class View
+ * @package Maneza\Brandlogo\Block\Product
  */
-class View extends  \Magento\Catalog\Block\Product\View
+class View extends \Magento\Catalog\Block\Product\View
 {
     /**
-     * @var \Magento\Catalog\Model\Category\FileInfo 
+     * @var FileInfo
      */
     private $fileinfo;
 
     /**
-     * @var \Magento\Catalog\Model\CategoryRepository
+     * @var CategoryRepository
      */
     protected $categoryRepository;
 
     /**
-     * @var \Magento\Framework\Url\EncoderInterface
+     * @var UrlEncoderInterface
      */
     protected $urlEncoder;
 
     /**
      * Magento string lib
      *
-     * @var \Magento\Framework\Stdlib\StringUtils
+     * @var StringUtils
      */
     protected $string;
 
     /**
-     * @var \Magento\Framework\Json\EncoderInterface
+     * @var EncoderInterface
      */
     protected $_jsonEncoder;
 
     /**
-     * @var \Magento\Framework\Pricing\PriceCurrencyInterface
+     * @var PriceCurrencyInterface
      * @deprecated 102.0.0
      */
 
     private $CategoryCollecionFactory;
-  
+
     /**
      * @var PriceCurrencyInterface
      */
@@ -64,22 +74,22 @@ class View extends  \Magento\Catalog\Block\Product\View
 
 
     /**
-     * @var \Magento\Catalog\Helper\Product
+     * @var HelperProduct
      */
     protected $_productHelper;
 
     /**
-     * @var \Magento\Catalog\Model\ProductTypes\ConfigInterface
+     * @var ConfigInterface
      */
     protected $productTypeConfig;
 
     /**
-     * @var \Magento\Framework\Locale\FormatInterface
+     * @var FormatInterface
      */
     protected $_localeFormat;
 
     /**
-     * @var \Magento\Customer\Model\Session
+     * @var Session
      */
     protected $customerSession;
 
@@ -90,128 +100,129 @@ class View extends  \Magento\Catalog\Block\Product\View
 
     protected $categoryFactory;
 
-    
+
     /**
      *
-     * @param \Magento\Catalog\Block\Product\Context $context
-     * @param \Magento\Framework\Url\EncoderInterface $urlEncoder
+     * @param Context $context
+     * @param UrlEncoderInterface $urlEncoder
      * @param PriceCurrencyInterface $priceCurrency
-     * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryCollecionFactory
-     * @param \Magento\Catalog\Model\Category\FileInfo $fileinfo
-     * @param \Magento\Catalog\Model\CategoryRepository $categoryRepository
-     * @param \Magento\Framework\Json\EncoderInterface $jsonEncoder
-     * @param \Magento\Framework\Stdlib\StringUtils $string
-     * @param \Magento\Catalog\Helper\Product $productHelper
-     * @param \Magento\Catalog\Model\ProductTypes\ConfigInterface $productTypeConfig
-     * @param \Magento\Framework\Locale\FormatInterface $localeFormat
-     * @param \Magento\Customer\Model\Session $customerSession
+     * @param CollectionFactory $categoryCollecionFactory
+     * @param FileInfo $fileinfo
+     * @param CategoryRepository $categoryRepository
+     * @param EncoderInterface $jsonEncoder
+     * @param StringUtils $string
+     * @param HelperProduct $productHelper
+     * @param ConfigInterface $productTypeConfig
+     * @param FormatInterface $localeFormat
+     * @param Session $customerSession
      * @param ProductRepositoryInterface $productRepository
      * @param array $data
      */
     public function __construct(
-        \Magento\Catalog\Block\Product\Context $context,
-        \Magento\Framework\Url\EncoderInterface $urlEncoder,
-        PriceCurrencyInterface $priceCurrency,
-        \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryCollecionFactory,
-        \Magento\Catalog\Model\Category\FileInfo $fileinfo,
-        \Magento\Catalog\Model\CategoryRepository $categoryRepository,
-        \Magento\Framework\Json\EncoderInterface $jsonEncoder,
-        \Magento\Framework\Stdlib\StringUtils $string,
-        \Magento\Catalog\Helper\Product $productHelper,
-        \Magento\Catalog\Model\ProductTypes\ConfigInterface $productTypeConfig,
-        \Magento\Framework\Locale\FormatInterface $localeFormat,
-        \Magento\Customer\Model\Session $customerSession,
+        Context                    $context,
+        UrlEncoderInterface        $urlEncoder,
+        PriceCurrencyInterface     $priceCurrency,
+        CollectionFactory          $categoryCollecionFactory,
+        FileInfo                   $fileinfo,
+        CategoryRepository         $categoryRepository,
+        EncoderInterface           $jsonEncoder,
+        StringUtils                $string,
+        HelperProduct              $productHelper,
+        ConfigInterface            $productTypeConfig,
+        FormatInterface            $localeFormat,
+        Session                    $customerSession,
         ProductRepositoryInterface $productRepository,
-        \Magento\Catalog\Model\CategoryFactory $categoryFactory,
-        array $data = []
-    ) {
+        CategoryFactory            $categoryFactory,
+        array                      $data = []
+    )
+    {
         $this->_categoryFactory = $categoryFactory;
         $this->categoryCollecionFactory = $categoryCollecionFactory;
         $this->fileinfo = $fileinfo;
         $this->categoryRepository = $categoryRepository;
-        parent::__construct( 
-        $context,
-        $urlEncoder,
-        $jsonEncoder,
-        $string,
-        $productHelper,
-        $productTypeConfig,
-        $localeFormat,
-        $customerSession,
-        $productRepository,
-        $priceCurrency,
-        $data
-     );
+        parent::__construct(
+            $context,
+            $urlEncoder,
+            $jsonEncoder,
+            $string,
+            $productHelper,
+            $productTypeConfig,
+            $localeFormat,
+            $customerSession,
+            $productRepository,
+            $priceCurrency,
+            $data
+        );
 
     }
+
     /**
      * Get Brand collaction to process the brand image.
      *
      * @param string $categoryTitle
-     * @return void
+     * @return array
      */
-    public function getBrandCollection($categoryTitle='Brands')
+    public function getBrandCollection($categoryTitle = 'Brands')
     {
-        
+
         $collection = $this->categoryCollecionFactory->create();
 
         $ids = array();
-        
+
         if ($collection->getSize()) {
-            foreach($collection as $collect){
+            foreach ($collection as $collect) {
                 $category = $this->_categoryFactory->create()->load($collect->getId());
                 $categoryName = $category->getName();
-                if($categoryName == $categoryTitle){   
-                $categorySubs = $collect->getChildrenCategories();
-                 foreach ($categorySubs as $categorySub)
-            {   
-                    array_push($ids, $categorySub->getId());      
-              }
+                if ($categoryName == $categoryTitle) {
+                    $categorySubs = $collect->getChildrenCategories();
+                    foreach ($categorySubs as $categorySub) {
+                        array_push($ids, $categorySub->getId());
+                    }
+                }
             }
-          }
         }
+
         return $ids;
-
-
     }
-     
+
     /**
      * Get and image from the admin category page
      *
-     * @return Array
+     * @return array
      */
     public function getCategoryImage()
     {
-        $categoryData=array();
+        $categoryData = array();
         $productCategory = $this->getProduct()->getCategoryIds();
         $brandList = $this->getBrandCollection();
-        $commonCatergory = array_intersect($productCategory,$brandList);        
+        $commonCatergory = array_intersect($productCategory, $brandList);
 
-        if(count($commonCatergory)>0)
-        {
-            foreach($commonCatergory as $categoryItem){
+        if (count($commonCatergory) > 0) {
+
+            foreach ($commonCatergory as $categoryItem) {
                 $category = $this->categoryRepository->get($categoryItem);
-                //var_dump($category);
+
                 foreach ($category->getAttributes() as $attributeCode => $attribute) {
+
                     if ($attribute->getBackend() instanceof ImageBackendModel) {
                         $fileName = $category->getData($attributeCode);
-                        if(!is_null($fileName)){
+                        if (!is_null($fileName)) {
                             if ($this->fileinfo->isExist($fileName)) {
-                                if(!in_array($category->getId(), $categoryData))
-                                {
+                                if (!in_array($category->getId(), $categoryData)) {
                                     $categoryData [$category->getId()]
-                                    = array(
-                                        'name'=> basename($fileName),
+                                        = array(
+                                        'name' => basename($fileName),
                                         'url' => $category->getImageUrl($attributeCode)
                                     );
                                 }
-                               
+
                             }
                         }
                     }
                 }
-            }        
-    }
+            }
+        }
+
         return $categoryData;
     }
 

@@ -1,14 +1,16 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * @package   Maneza\Brandlogo\Block\Product
+ * @author    Ntabethemba Ntshoza
+ * @date      15-03-2022
+ * @copyright Copyright © 2022 MRP Group IT
  */
 
-/** @var $block Ecomplete\Brandlogo\Block\Product\View*/
+/** @var  Maneza\Brandlogo\Block\Product\View $block */
 
 ?>
-<div class="brand-logo-image" >
-    <?php foreach($block->getCategoryImage() as $brand): ?>
-             <img src="<?= $brand['url'] ?>" alt="<?= $brand['name'] ?>" >
+<div class="brand-logo-image">
+    <?php foreach ($block->getCategoryImage() as $brand): ?>
+        <img src="<?= $brand['url'] ?>" alt="<?= $brand['name'] ?>">
     <?php endforeach; ?>
 </div>

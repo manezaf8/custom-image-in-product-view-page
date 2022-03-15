@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
-
+<!--
+/**
+ * @package   Maneza_Brandlogo
+ * @author    Ntabethemba Mabetshe
+ * @copyright Copyright (c) 2022 F8
+ */
+-->
     <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-
     <preference for="Magento\Catalog\Block\Product\View" type="Maneza\Brandlogo\Block\Product\View" />
 </config>

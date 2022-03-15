@@ -5,13 +5,13 @@
 .brand-logo-image img {
     width: 300px;
     height: 150px;
-  }
+}
 
-  .brand-logo-image img:hover {
+.brand-logo-image img:hover {
 
     width: 300px;
     height: 150px;
     transform: scaleX(-1);
     opacity: 0.8;
-    
-  }
+
+}

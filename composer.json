@@ -1,25 +1,30 @@
 {
-    "name": "maneza/module-brandlogo",
-    "description": "Module adding custom logo in product view page",
-    "type": "magento2-module",
-    "license": "proprietary",
-    "keywords": ["Maneza f8", "magento2", "maneza", "brand logo "],
-    "authors": [
-        {
-            "name": "Ntabethemba Mabatshe",
-            "email": "bmaneza@gmail.com",
-            "role": "backend developer"
-        }
-    ],
-    "require": {
-        "php": "~7.1.0||~7.2.0||~7.3.0||~7.4.0"
-    },
-    "autoload": {
-        "files": [
-            "registration.php"
-        ],
-        "psr-4": {
-            "Maneza\\Brandlogo\\": ""
-        }
+  "name": "maneza/module-brandlogo",
+  "description": "Module adding custom logo in product view page",
+  "type": "magento2-module",
+  "license": "proprietary",
+  "keywords": [
+    "Maneza f8",
+    "magento2",
+    "maneza",
+    "brand logo "
+  ],
+  "authors": [
+    {
+      "name": "Ntabethemba Mabatshe",
+      "email": "bmaneza@gmail.com",
+      "role": "Backend developer"
     }
+  ],
+  "require": {
+    "php": "^7.4.0"
+  },
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Maneza\\Brandlogo\\": ""
+    }
+  }
 }
